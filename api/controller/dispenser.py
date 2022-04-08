@@ -28,15 +28,14 @@ class Dispenser:
             if d not in self.drink_types:
                 return "Bad drink {} in the order".format(d)
         glass_size = recipe_dict['size']
-        if  glass_size not in self.glass_sizes:
+        if glass_size not in self.glass_sizes:
             return "Bad size {} in the order".format(glass_size)
         amount = self.amounts[glass_size]/num_drinks
         tasks = []
         #if not self.sensor.is_glass_present():
         #    return "Please Place a Cup to Dispense Drinks"
         for drink in drinks:
-            pump_no = self.drink_type.index(drink)
-            print("Pump Number and Amount: {} and {}").format(pump_no, amount)
+            pump_no = self.drink_types.index(drink)
             tasks.append(asyncio.create_task(self.pumps[pump_no].pour(amount)))
         #for t in tasks:
         #    await t

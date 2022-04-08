@@ -14,3 +14,4 @@ class Pump:
         GPIO.output(self.pin, GPIO.LOW)
         await asyncio.sleep(wait_time)
         GPIO.output(self.pin, GPIO.HIGH)
+        print("Pin Number and Amount: {} and {}").format(self.pin, amount)
