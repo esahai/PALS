@@ -1,5 +1,5 @@
 import json
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from controller.dispenser import *
 dispenser = None
 
@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 @app.route('/menu')
 def menu():
-    m = dispenser.get('/menu')
-    return json.dumps(m)
+    m = dispenser.get_menu()
+    return make_response(json.dumps(m), 200)
 
 
 @app.route('/dispense', methods=['POST'])
@@ -32,13 +32,17 @@ def dispense():
     return resp
 
 
-@app.route('/glass')
-def glass():
-    return dispenser.glass_status()
+@app.route('/glass/status')
+def glass_status():
+    return make_response(dispenser.get_glass_status(), 200)
+
+
+@app.route('/glass/sizes')
+def glass_sizes():
+    return make_response(json.dumps(dispenser.get_glass_sizes()), 200)
 
 
 def main():
     global dispenser
     dispenser = Dispenser()
-    dispenser.configure()
     app.run()

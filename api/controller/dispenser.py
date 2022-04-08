@@ -36,8 +36,11 @@ class Dispenser:
             await t
         return 0, "Done"
 
-    def glass_status(self):
+    def get_glass_status(self):
         return "Green" if self.sensor.is_glass_present() else "Red"
+
+    def get_glass_sizes(self):
+        return self.glass_sizes
 
     def configure(self):
         config = configparser.ConfigParser()
@@ -46,10 +49,14 @@ class Dispenser:
         except Exception as ex:
                 raise(ex)
         self.drink_types = [config['pumps']['1'], config['pumps']['2'], config['pumps']['3']]
-        self.amounts = config['sizes']
-        Pump.FLOW_RATE = config['pumps']['flow_rate']
-        GlassSensor.MIN_DISTANCE = config['sensor']['min_distance']
-        GlassSensor.TIME_OUT = config['sensor']['timeout']
+        self.glass_sizes = []
+        self.amounts = {}
+        for  i, gsz in enumerate(config['sizes']):
+                self.amounts[gsz] = float(config['sizes'][gsz])
+                self.glass_sizes.append(gsz)
+        Pump.FLOW_RATE = float(config['pumps']['flow_rate'])
+        GlassSensor.MIN_DISTANCE = float(config['sensor']['min_distance'])
+        GlassSensor.TIME_OUT = float(config['sensor']['timeout'])
 
     def get_menu(self):
         return self.drink_types
