@@ -1,3 +1,4 @@
+import os
 from .sensor import GlassSensor
 from .pump import Pump
 import configparser
@@ -40,7 +41,10 @@ class Dispenser:
 
     def configure(self):
         config = configparser.ConfigParser()
-        config.read('dispenser.config')
+        try:
+                config.read_file(open('dispenser.config', "r"))
+        except Exception as ex:
+                raise(ex)
         self.drink_types = [config['pumps']['1'], config['pumps']['2'], config['pumps']['3']]
         self.amounts = config['sizes']
         Pump.FLOW_RATE = config['pumps']['flow_rate']
