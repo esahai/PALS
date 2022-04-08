@@ -6,13 +6,13 @@ dispenser = None
 app = Flask(__name__)
 
 
-@app.route('/menu')
+@app.route('/api/menu')
 def menu():
     m = dispenser.get_menu()
     return make_response(json.dumps(m), 200)
 
 
-@app.route('/dispense', methods=['POST'])
+@app.route('/api/dispense', methods=['POST'])
 def dispense():
     error = None
     try:
@@ -32,12 +32,12 @@ def dispense():
     return resp
 
 
-@app.route('/glass/status')
+@app.route('/api/glass/status')
 def glass_status():
     return make_response(dispenser.get_glass_status(), 200)
 
 
-@app.route('/glass/sizes')
+@app.route('/api/glass/sizes')
 def glass_sizes():
     return make_response(json.dumps(dispenser.get_glass_sizes()), 200)
 
@@ -45,4 +45,4 @@ def glass_sizes():
 def main():
     global dispenser
     dispenser = Dispenser()
-    app.run()
+    app.run(host="0.0.0.0", port=8080)
