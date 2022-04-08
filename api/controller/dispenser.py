@@ -17,15 +17,18 @@ class Dispenser:
         self.amounts = None
         self.configure()
         self.pumps = []
-        self.tasks = []
         for pin in Dispenser.PUMP_PINS:
             self.pumps.append(Pump(pin))
         self.sensor = GlassSensor()
-        asyncio.run(self.runner())
 
-    async def runner(self):
-        for t in self.tasks:
-                await t
+    async def run_pumps(self, drinks, amount):
+        tasks = []
+        for drink in drinks:
+            pump_no = self.drink_types.index(drink)
+            tasks.append(asyncio.create_task(self.pumps[pump_no].pour(amount)))
+
+        for t in tasks:
+            await t
 
     def dispense(self, recipe_dict):
         drinks = recipe_dict['drinks']
@@ -40,9 +43,9 @@ class Dispenser:
 
         #if not self.sensor.is_glass_present():
         #    return "Please Place a Cup to Dispense Drinks"
-        for drink in drinks:
-            pump_no = self.drink_types.index(drink)
-            self.tasks.append(asyncio.create_task(self.pumps[pump_no].pour(amount)))
+
+        asyncio.run(self.run_pumps(drinks, amount))
+
 
         return None
 
