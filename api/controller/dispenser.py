@@ -12,7 +12,8 @@ class Dispenser:
 
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
-        self.drinks = None
+        self.drink_types = None
+        self.glass_sizes = None
         self.amounts = None
         self.configure()
         self.pumps = []
@@ -24,7 +25,7 @@ class Dispenser:
         drinks = recipe_dict['drinks']
         num_drinks = len(drinks)
         for d in drinks:
-            if d not in self.drinks:
+            if d not in self.drink_types:
                 return "Bad drink {} in the order".format(d)
         glass_size = recipe_dict['size']
         if  glass_size not in self.glass_sizes:
