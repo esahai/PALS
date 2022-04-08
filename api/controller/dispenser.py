@@ -2,6 +2,7 @@ from .sensor import GlassSensor
 from .pump import Pump
 import configparser
 import json
+import RPi.GPIO as GPIO
 import asyncio
 
 class Dispenser:
@@ -9,6 +10,7 @@ class Dispenser:
     PUMP_PINS = [4, 14, 15]
 
     def __init__(self):
+        GPIO.setmode(GPIO.BCM)
         self.drinks = None
         self.amounts = None
         self.configure()
