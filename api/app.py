@@ -18,13 +18,10 @@ def dispense():
     try:
         order = json.loads(request.data)
     except:
-        error = "Bad Order"
+        error = "Badly formatted Order"
     if error is None:
         print(order)
-        if dispenser.get_glass_status() == 'Red':
-            error = "Insert the Glass"
-        else:
-            dispenser.dispense(order)
+        error = dispenser.dispense(order)
     if error is None:
         resp = make_response("Enjoy your drink!", 200)
     else:
