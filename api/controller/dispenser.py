@@ -1,5 +1,5 @@
-from sensor import GlassSensor
-from pump import Pump
+from .sensor import GlassSensor
+from .pump import Pump
 import configparser
 import json
 import asyncio
@@ -17,7 +17,7 @@ class Dispenser:
             self.pumps.append(Pump(pin))
         self.sensor = GlassSensor()
 
-    def dispense(self, recipe):
+    async def dispense(self, recipe):
         recipe_dict = json.loads(recipe)
         drinks = recipe_dict['drinks']
         num_drinks = len(drinks)

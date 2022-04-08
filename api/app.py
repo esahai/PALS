@@ -35,6 +35,6 @@ def glass():
 def main():
     global dispenser
     app = Flask(__name__)
-    dispenser = Dispenser[]
+    dispenser = Dispenser()
     dispenser.configure()
     app.run()
