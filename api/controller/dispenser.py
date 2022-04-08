@@ -20,8 +20,7 @@ class Dispenser:
             self.pumps.append(Pump(pin))
         self.sensor = GlassSensor()
 
-    async def dispense(self, recipe):
-        recipe_dict = json.loads(recipe)
+    async def dispense(self, recipe_dict):
         drinks = recipe_dict['drinks']
         num_drinks = len(drinks)
         glass_size = recipe_dict['size']

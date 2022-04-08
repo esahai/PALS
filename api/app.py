@@ -1,5 +1,5 @@
 import json
-from flask import Flask, jsonify, make_response
+from flask import Flask, jsonify, make_response, request
 from controller.dispenser import *
 dispenser = None
 
@@ -21,7 +21,7 @@ def dispense():
         error = "Bad Order"
     if error is None:
         print(order)
-        if dispenser.glass_status() == 'Red':
+        if dispenser.get_glass_status() == 'Red':
             error = "Insert the Glass"
         else:
             dispenser.dispense(order)
