@@ -3,11 +3,14 @@ from flask import Flask, jsonify
 from controller.dispenser import *
 dispenser = None
 
+app = Flask(__name__)
+
 
 @app.route('/menu')
 def menu():
     m = dispenser.get('/menu')
     return json.dumps(m)
+
 
 @app.route('/dispense', methods=['POST'])
 def dispense():
@@ -28,13 +31,14 @@ def dispense():
         resp = make_response(error, 400)
     return resp
 
+
 @app.route('/glass')
 def glass():
     return dispenser.glass_status()
 
+
 def main():
     global dispenser
-    app = Flask(__name__)
     dispenser = Dispenser()
     dispenser.configure()
     app.run()
