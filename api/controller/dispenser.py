@@ -20,7 +20,7 @@ class Dispenser:
             self.pumps.append(Pump(pin))
         self.sensor = GlassSensor()
 
-    async def dispense(self, recipe_dict):
+     def dispense(self, recipe_dict):
         drinks = recipe_dict['drinks']
         num_drinks = len(drinks)
         for d in drinks:
@@ -36,8 +36,8 @@ class Dispenser:
         for drink in drinks:
             pump_no = self.drink_type.index(drink)
             tasks.append(asyncio.create_task(self.pumps[pump_no].pour(amount)))
-        for t in tasks:
-            await t
+        #for t in tasks:
+        #    await t
         return None
 
     def get_glass_status(self):
