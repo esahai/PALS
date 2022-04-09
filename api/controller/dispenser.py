@@ -36,6 +36,8 @@ class Dispenser:
     def dispense(self, recipe_dict):
         if self.busy:
                 return "Dispenser is currently busy. Please try again later", 503
+        if "drinks" not in recipe_dict or "size" not in recipe_dict:
+                return "Missing size or drinks in the order", 400
         drinks = recipe_dict['drinks']
         num_drinks = len(drinks)
         if num_drinks < 1:
@@ -44,10 +46,10 @@ class Dispenser:
                 return "Select up to 3 drinks; you selected {}".format(num_drinks), 400
         for d in drinks:
             if d not in self.drink_types:
-                return "Bad drink {} in the order".format(d)
+                return "Bad drink {} in the order".format(d), 400
         glass_size = recipe_dict['size']
         if glass_size not in self.glass_sizes:
-            return "Bad size {} in the order".format(glass_size)
+            return "Bad size {} in the order".format(glass_size), 400
         amount = self.amounts[glass_size]/num_drinks
 
         #if not self.sensor.is_glass_present():
