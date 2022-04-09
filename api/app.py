@@ -18,14 +18,14 @@ def dispense():
     try:
         order = json.loads(request.data)
     except:
-        error = "Badly formatted Order"
+        error, code = "Badly formatted Order", 400
     if error is None:
         print(order)
-        error = dispenser.dispense(order)
+        error, code = dispenser.dispense(order)
     if error is None:
         resp = make_response("Enjoy your drink!", 200)
     else:
-        resp = make_response(error, 400)
+        resp = make_response(error, code)
     return resp
 
 

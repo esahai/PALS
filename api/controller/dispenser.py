@@ -15,6 +15,7 @@ class Dispenser:
         self.drink_types = None
         self.glass_sizes = None
         self.amounts = None
+        self.busy = False
         self.configure()
         self.pumps = []
         for pin in Dispenser.PUMP_PINS:
@@ -22,6 +23,7 @@ class Dispenser:
         self.sensor = GlassSensor()
 
     async def run_pumps(self, drinks, amount):
+        self.busy = True
         tasks = []
         for drink in drinks:
             pump_no = self.drink_types.index(drink)
@@ -29,10 +31,17 @@ class Dispenser:
 
         for t in tasks:
             await t
+        self.busy = False
 
     def dispense(self, recipe_dict):
+        if self.busy:
+                return "Dispenser is currently busy. Please try again later", 503
         drinks = recipe_dict['drinks']
         num_drinks = len(drinks)
+        if num_drinks < 1:
+                return "Select at least one drink", 400
+        if num_drinks > 3:
+                return "Select up to 3 drinks; you selected {}".format(num_drinks), 400
         for d in drinks:
             if d not in self.drink_types:
                 return "Bad drink {} in the order".format(d)
@@ -42,12 +51,10 @@ class Dispenser:
         amount = self.amounts[glass_size]/num_drinks
 
         #if not self.sensor.is_glass_present():
-        #    return "Please Place a Cup to Dispense Drinks"
+        #    return "Please Place a Cup to Dispense Drinks", 400
 
         asyncio.run(self.run_pumps(drinks, amount))
-
-
-        return None
+        return None, 200
 
     def get_glass_status(self):
         return "Green" if self.sensor.is_glass_present() else "Red"
