@@ -34,7 +34,7 @@ class Dispenser:
                 pump_no = self.drink_types.index(drink)
                 self.tasks.append(loop.run_in_executor(pool, self.pumps[pump_no].pour, amount))
 
-        loop.create_task(self.wait_till_dispensed)
+        loop.create_task(self.wait_till_dispensed())
 
     async def  wait_till_dispensed(self):
         print("Waiting for pumps to finish dispensing")
