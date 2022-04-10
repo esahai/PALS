@@ -60,9 +60,9 @@ class Dispenser:
         asyncio.to_thread(self.run_pumps(drinks, amount))
         return None, 200
 
-    def    start_flush(self):
+    def start_flush(self):
         self.busy = True
-        for pump in pumps:
+        for pump in self.pumps:
             pump.start()
         return "All Pumps are Running"
 
@@ -71,7 +71,7 @@ class Dispenser:
         for t in self.tasks:
             t.cancel()
         self.busy = False
-        for pump in pumps:
+        for pump in self.pumps:
             pump.stop()
         return "All Pumps Stopped"
 
