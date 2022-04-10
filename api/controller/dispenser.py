@@ -5,7 +5,7 @@ import configparser
 import json
 import RPi.GPIO as GPIO
 import asyncio
-from concurrent.futures.import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 
 class Dispenser:
     MAX_PUMPS = 3
