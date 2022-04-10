@@ -5,6 +5,7 @@ import configparser
 import json
 import RPi.GPIO as GPIO
 import asyncio
+from concurrent.futures.import ThreadPoolExecutor
 
 class Dispenser:
     MAX_PUMPS = 3
@@ -26,13 +27,13 @@ class Dispenser:
 
     async def run_pumps(self, drinks, amount):
         self.busy = True
-        for drink in drinks:
-            pump_no = self.drink_types.index(drink)
-            self.tasks.append(asyncio.create_task(self.pumps[pump_no].pour(amount)))
+        loop = asyncio.get_running_loop()
+        with ThreadPoolExecutor() as pool:
+            for drink in drinks:
+                pump_no = self.drink_types.index(drink)
+                self.tasks.append(loop.run_in_executor(pool, self.pumps[pump_no].pour, amount))
 
-        for t in self.tasks:
-            await t
-            self.tasks.remove(t)
+        await asyncio.wait(self.tasks)
         self.busy = False
 
     def dispense(self, recipe_dict):
@@ -57,7 +58,7 @@ class Dispenser:
         if not self.sensor.is_glass_present():
             return "Please Place a Cup to Dispense Drinks", 400
 
-        asyncio.to_thread(self.run_pumps(drinks, amount))
+        asyncio.run(self.run_pumps(drinks, amount), debug=True)
         return None, 200
 
     def start_flush(self):
