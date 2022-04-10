@@ -18,7 +18,7 @@ class Dispenser:
         self.busy = False
         self.configure()
         self.pumps = []
-        slelf.tasks = []
+        self.tasks = []
         for pin in Dispenser.PUMP_PINS:
             self.pumps.append(Pump(pin))
         self.sensor = GlassSensor()
