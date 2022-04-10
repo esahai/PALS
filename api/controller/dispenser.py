@@ -33,7 +33,11 @@ class Dispenser:
                 pump_no = self.drink_types.index(drink)
                 self.tasks.append(loop.run_in_executor(pool, self.pumps[pump_no].pour, amount))
 
+        asyncio.create_task(self.wait_till_dispensed())
+
+    async def wait_till_dispensed(self):
         await asyncio.wait(self.tasks)
+        self.tasks.clear()
         self.busy = False
 
     def dispense(self, recipe_dict):
@@ -69,8 +73,6 @@ class Dispenser:
 
 
     def stop(self):
-        for t in self.tasks:
-            t.cancel()
         self.busy = False
         for pump in self.pumps:
             pump.stop()
