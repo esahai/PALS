@@ -17,6 +17,7 @@ class Dispenser:
         self.glass_sizes = None
         self.amounts = None
         self.busy = False
+        self.ignore_glass = False
         self.configure()
         self.pumps = []
         self.tasks = []
@@ -32,8 +33,8 @@ class Dispenser:
             for drink in drinks:
                 pump_no = self.drink_types.index(drink)
                 self.tasks.append(loop.run_in_executor(pool, self.pumps[pump_no].pour, amount))
-            loop.call_soon_threadsafe(self.wait_till_dispensed)
 
+         loop.call_later(10, self.wait_till_dispensed)
 
     async def wait_till_dispensed(self):
         print("Waiting for pumps to finish dispensing")
@@ -41,6 +42,10 @@ class Dispenser:
         self.tasks.clear()
         self.busy = False
         print("Wait over")
+
+    def glass_ignore(self):
+        self.ignore_glass = True
+        return "Ignoring glass presence sensor"
 
     def dispense(self, recipe_dict):
         if self.busy:
@@ -61,7 +66,7 @@ class Dispenser:
             return "Bad size {} in the order".format(glass_size), 400
         amount = self.amounts[glass_size]/num_drinks
 
-        if not self.sensor.is_glass_present():
+        if not self.ignore_glass and not self.sensor.is_glass_present():
             return "Please Place a Cup to Dispense Drinks", 400
 
         asyncio.run(self.run_pumps(drinks, amount), debug=True)
