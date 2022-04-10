@@ -1,6 +1,7 @@
 import json
 from flask import Flask, jsonify, make_response, request
 from controller.dispenser import *
+
 dispenser = None
 
 app = Flask(__name__)
@@ -28,9 +29,11 @@ def dispense():
         resp = make_response(error, code)
     return resp
 
+
 @app.route('/api/glass/ignore')
 def dispenser_ignore_glass():
-        return make_response(dispenser.glass_ignore(), 200)
+    return make_response(dispenser.glass_ignore(), 200)
+
 
 @app.route('/api/dispenser/stop')
 def dispenser_stop():
