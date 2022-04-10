@@ -12,7 +12,7 @@ def menu():
     return make_response(json.dumps(m), 200)
 
 
-@app.route('/api/dispense', methods=['POST'])
+@app.route('/api/dispenser/dispense', methods=['POST'])
 def dispense():
     error = None
     try:
@@ -27,6 +27,16 @@ def dispense():
     else:
         resp = make_response(error, code)
     return resp
+
+
+@app.route('/api/dispenser/stop')
+def dispenser_stop():
+    return make_response(dispenser.stop(), 200)
+
+
+@app.route('/api/dispenser/start_flush')
+def dispenser_flush():
+    return make_response(dispenser.start_flush(), 200)
 
 
 @app.route('/api/glass/status')

@@ -18,19 +18,21 @@ class Dispenser:
         self.busy = False
         self.configure()
         self.pumps = []
+        slelf.tasks = []
         for pin in Dispenser.PUMP_PINS:
             self.pumps.append(Pump(pin))
         self.sensor = GlassSensor()
+        self.stop()
 
     async def run_pumps(self, drinks, amount):
         self.busy = True
-        tasks = []
         for drink in drinks:
             pump_no = self.drink_types.index(drink)
-            tasks.append(asyncio.create_task(self.pumps[pump_no].pour(amount)))
+            self.tasks.append(asyncio.create_task(self.pumps[pump_no].pour(amount)))
 
-        for t in tasks:
+        for t in self.tasks:
             await t
+            self.tasks.remove(t)
         self.busy = False
 
     def dispense(self, recipe_dict):
@@ -52,11 +54,27 @@ class Dispenser:
             return "Bad size {} in the order".format(glass_size), 400
         amount = self.amounts[glass_size]/num_drinks
 
-        #if not self.sensor.is_glass_present():
-        #    return "Please Place a Cup to Dispense Drinks", 400
+        if not self.sensor.is_glass_present():
+            return "Please Place a Cup to Dispense Drinks", 400
 
-        asyncio.run(self.run_pumps(drinks, amount))
+        asyncio.to_thread(self.run_pumps(drinks, amount))
         return None, 200
+
+    def    start_flush(self):
+        self.busy = True
+        for pump in pumps:
+            pump.start()
+        return "All Pumps are Running"
+
+
+    def stop(self):
+        for t in self.tasks:
+            t.cancel()
+        self.busy = False
+        for pump in pumps:
+            pump.stop()
+        return "All Pumps Stopped"
+
 
     def get_glass_status(self):
         return "Green" if self.sensor.is_glass_present() else "Red"

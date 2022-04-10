@@ -12,7 +12,14 @@ class Pump:
     async def pour(self, amount):
         wait_time = amount / Pump.FLOW_RATE
         print("Turning on pin Number {} and waiting for {} seconds to dispense amount {}".format(self.pin, wait_time, amount))
-        GPIO.output(self.pin, GPIO.HIGH)
+        self.start()
         await asyncio.sleep(wait_time)
-        GPIO.output(self.pin, GPIO.LOW)
+        self.stop()
         print("Turning off pin Number {}".format(self.pin))
+
+
+    def start(selfs):
+        GPIO.output(self.pin, GPIO.HIGH)
+
+    def stop(self):
+        GPIO.output(self.pin, GPIO.LOW)
