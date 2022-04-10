@@ -18,7 +18,7 @@ class Pump:
         print("Turning off pin Number {}".format(self.pin))
 
 
-    def start(selfs):
+    def start(self):
         GPIO.output(self.pin, GPIO.HIGH)
 
     def stop(self):
