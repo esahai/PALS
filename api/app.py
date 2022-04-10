@@ -28,6 +28,9 @@ def dispense():
         resp = make_response(error, code)
     return resp
 
+@app.route('/api/glass/ignore')
+def dispenser_ignore_glass():
+        dispenser.glass_ignore()
 
 @app.route('/api/dispenser/stop')
 def dispenser_stop():
