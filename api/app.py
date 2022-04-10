@@ -30,7 +30,7 @@ def dispense():
 
 @app.route('/api/glass/ignore')
 def dispenser_ignore_glass():
-        dispenser.glass_ignore()
+        return make_response(dispenser.glass_ignore(), 200)
 
 @app.route('/api/dispenser/stop')
 def dispenser_stop():
