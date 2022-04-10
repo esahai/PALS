@@ -36,9 +36,11 @@ class Dispenser:
         asyncio.create_task(self.wait_till_dispensed())
 
     async def wait_till_dispensed(self):
+        print("Waiting for pumps to finish dispensing")
         await asyncio.wait(self.tasks)
         self.tasks.clear()
         self.busy = False
+        print("Wait over")
 
     def dispense(self, recipe_dict):
         if self.busy:

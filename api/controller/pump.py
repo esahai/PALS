@@ -15,7 +15,6 @@ class Pump:
         print("Waiting for {} seconds to dispense amount {}".format(wait_time, amount))
         time.sleep(wait_time)
         self.stop()
-        print("Turning off pin Number {}".format(self.pin))
 
 
     def start(self):
