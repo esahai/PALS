@@ -7,7 +7,7 @@ from flask_cors import CORS
 dispenser = None
 
 app = Flask(__name__, static_url_path='', 
-            static_folder='ui/build', template_folder='ui/build')
+            static_folder='ui/dist', template_folder='ui/dist')
 CORS(app)
 
 @app.route("/")
