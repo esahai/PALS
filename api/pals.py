@@ -1,13 +1,18 @@
 import sys
 import json
-from flask import Flask, jsonify, make_response, request
+from flask import Flask, jsonify, make_response, request, render_template
 from .controller.dispenser import *
 from flask_cors import CORS
 
 dispenser = None
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', 
+            static_folder='ui/build', template_folder='ui/build')
 CORS(app)
+
+@app.route("/")
+def index():
+   return render_template("index.html")
 
 @app.route('/api/menu')
 def menu():
