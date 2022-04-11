@@ -13,6 +13,6 @@
            <v-app-bar-nav-icon></v-app-bar-nav-icon>
          </template>
 
-         <v-app-bar-title>Eashan's SoftDrink Cocktail Bar</v-app-bar-title>
+         <v-app-bar-title>PALS Soft Drink Bar</v-app-bar-title>
 </v-app-bar>
 </template>
