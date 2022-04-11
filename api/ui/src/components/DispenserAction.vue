@@ -26,7 +26,7 @@ export default {
                 this.store.order
             )
             .then(response => {this.store.setStatus(response.data); this.store.setInProgress(false); })
-            .catch(error => { this.store.setStatus(error.data); this.store.setInProgress(false); } )
+            .catch(error => { this.store.setStatus("Please Place Your Cup!"); console.log(error); this.store.setInProgress(false); } )
     }
   }
 }
