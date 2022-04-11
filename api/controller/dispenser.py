@@ -36,10 +36,10 @@ class Dispenser:
                 pump_no = self.drink_types.index(drink)
                 self.tasks.append(loop.run_in_executor(pool, self.pumps[pump_no].pour, amount))
 
-        print("Waiting for pumps to finish dispensing", file=sys.stdout)
-        await asyncio.wait(self.tasks)
-        self.tasks.clear()
-        self.busy = False
+            print("Waiting for pumps to finish dispensing", file=sys.stdout)
+            await asyncio.wait(self.tasks)
+            self.tasks.clear()
+            self.busy = False
         print("Wait over")
 
     def glass_ignore(self):
