@@ -1,6 +1,6 @@
 <template>
 <v-container align="right">
-<v-btn @click="submitOrder" color="red"  size="large" block>Dispense</v-btn>
+<v-btn @click="submitOrder" :disabled="store.inPogress"  color="red"  size="large" block>Dispense</v-btn>
 </v-container>
 
 </template>
