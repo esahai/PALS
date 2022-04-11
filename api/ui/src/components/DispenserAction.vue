@@ -25,8 +25,8 @@ export default {
             .post("/api/dispenser/dispense", 
                 this.store.order
             )
-            .then(response => {this.store.setStatus(response); this.store.setInProgress(false); })
-            .catch(error => { this.store.setStatus(error); this.store.setInProgress(false); } )
+            .then(response => {this.store.setStatus(response.data); this.store.setInProgress(false); })
+            .catch(error => { this.store.setStatus(error.data); this.store.setInProgress(false); } )
     }
   }
 }
