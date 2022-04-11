@@ -1,3 +1,3 @@
-import app
+from .pals import mainfn
 
-app.main()
+mainfn()

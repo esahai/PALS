@@ -1,3 +1,4 @@
+import sys
 import RPi.GPIO as GPIO
 import time
 import math
@@ -40,7 +41,7 @@ class GlassSensor:
             # multiply with the sonic speed (34300 cm/s)
             # and divide by 2, because there and back
             distance = (time_elapsed * 34300) / 2
-        print("Distance is {} in cm".format(distance))
+        print("Distance is {} in cm".format(distance), file=sys.stdout)
         return distance
 
     def is_glass_present(self):

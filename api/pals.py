@@ -1,11 +1,13 @@
+import sys
 import json
 from flask import Flask, jsonify, make_response, request
-from controller.dispenser import *
+from .controller.dispenser import *
+from flask_cors import CORS
 
 dispenser = None
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/api/menu')
 def menu():
@@ -21,7 +23,7 @@ def dispense():
     except:
         error, code = "Badly formatted Order", 400
     if error is None:
-        print(order)
+        print(order, file=sys.stdout)
         error, code = dispenser.dispense(order)
     if error is None:
         resp = make_response("Enjoy your drink!", 200)
@@ -55,7 +57,7 @@ def glass_sizes():
     return make_response(json.dumps(dispenser.get_glass_sizes()), 200)
 
 
-def main():
+def mainfn():
     global dispenser
     dispenser = Dispenser()
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=8080, debug=True)
